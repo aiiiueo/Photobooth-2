@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Web Photobooth</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    video, canvas {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      padding: 12px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 8px;
+      background: #ff4d6d;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #ff2e55;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📸 Web Photobooth</h1>
+
+  <div class="container">
+    <video id="video" autoplay></video>
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <div>
+      <button onclick="startCamera()">Nyalakan Kamera</button>
+      <button onclick="takePhoto()">Ambil Foto</button>
+      <button onclick="downloadPhoto()">Download</button>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+      } catch (err) {
+        alert("Tidak bisa mengakses kamera: " + err);
+      }
+    }
+
+    function takePhoto() {
+      canvas.style.display = "block";
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    }
+
+    function downloadPhoto() {
+      const link = document.createElement("a");
+      link.download = "photobooth.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
