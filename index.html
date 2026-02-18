@@ -68,15 +68,6 @@
     const canvas = document.getElementById("canvas");
     const context = canvas.getContext("2d");
 
-    async function startCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-      } catch (err) {
-        alert("Tidak bisa mengakses kamera: " + err);
-      }
-    }
-
     function takePhoto() {
       canvas.style.display = "block";
       canvas.width = video.videoWidth;
